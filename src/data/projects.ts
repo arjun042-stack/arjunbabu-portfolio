@@ -7,10 +7,10 @@ export interface Project {
   detailedDescription?: string;
   technologies: string[];
   keyFeatures: string[];
-  githubUrl: string;
+  githubUrl?: string;
   demoUrl?: string;
   isFeatured?: boolean;
-  highlightType?: "siem" | "doc-ai" | "phishing-trap";
+  highlightType?: "siem" | "doc-ai" | "phishing-trap" | "iot-rfid";
 }
 
 export const projectsData: Project[] = [
@@ -104,5 +104,34 @@ export const projectsData: Project[] = [
     demoUrl: "https://phishing-trap-demo.vercel.app",
     isFeatured: true,
     highlightType: "phishing-trap"
+  },
+  {
+    id: "rfid-attendance-system",
+    number: "04",
+    title: "RFID-Based Smart Student Attendance System",
+    category: "IoT",
+    summary:
+      "An IoT-enabled student attendance system that automates attendance using RFID-based identification and NodeMCU (ESP8266).",
+    detailedDescription:
+      "An IoT-enabled student attendance system that automates attendance using RFID-based identification and NodeMCU (ESP8266). The system reads unique RFID card IDs, matches them with registered student records, and transmits attendance data to a cloud database for real-time monitoring.",
+    technologies: [
+      "RFID",
+      "NodeMCU",
+      "ESP8266",
+      "Wi-Fi",
+      "Cloud Database",
+      "IoT"
+    ],
+    keyFeatures: [
+      "RFID-based student identification",
+      "Automated attendance recording",
+      "NodeMCU ESP8266 as the central controller",
+      "Wi-Fi connectivity",
+      "Cloud database integration",
+      "Real-time attendance monitoring",
+      "Reduced dependency on manual attendance"
+    ],
+    isFeatured: true,
+    highlightType: "iot-rfid"
   }
 ];

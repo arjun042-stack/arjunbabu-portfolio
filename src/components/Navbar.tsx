@@ -5,6 +5,8 @@ import Image from "next/image";
 import { profileData } from "@/data/profile";
 import { FileDown, Menu, X, ArrowUpRight } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
+import AudioVisualizerPill from "./ui/AudioVisualizerPill";
+import { useSound } from "@/context/SoundContext";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -21,6 +23,7 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState("home");
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { playClick, playHover, playTransition } = useSound();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,6 +50,8 @@ export default function Navbar() {
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
+    playClick();
+    playTransition();
     setMobileMenuOpen(false);
     const targetId = href.substring(1);
     const targetElement = document.getElementById(targetId);
@@ -116,14 +121,15 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Right Actions: Resume Button & Mobile Toggle */}
-          {/* Right Actions: Theme Toggle, Resume Button & Mobile Toggle */}
-          <div className="flex items-center gap-2.5 sm:gap-3">
+          {/* Right Actions: Audio Pill, Theme Toggle, Resume Button & Mobile Toggle */}
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            <AudioVisualizerPill />
             <ThemeToggle />
 
             <a
               href={profileData.resumeUrl}
               download="Arjunbabu_Saila_Resume.pdf"
+              onClick={playClick}
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-medium bg-blue-600/15 text-blue-400 border border-blue-500/30 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all duration-200"
               aria-label="Download Resume PDF"
             >
@@ -134,7 +140,10 @@ export default function Navbar() {
             {/* Mobile Menu Button */}
             <button
               type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => {
+                playClick();
+                setMobileMenuOpen(!mobileMenuOpen);
+              }}
               className="lg:hidden p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               aria-expanded={mobileMenuOpen}
               aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
@@ -169,6 +178,11 @@ export default function Navbar() {
 
             <div className="pt-3 mt-2 border-t border-slate-800/80 space-y-2.5">
               <div className="flex items-center justify-between px-3 py-2 rounded-md bg-[#121824] border border-slate-800">
+                <span className="text-xs font-medium text-slate-300">Sound Effects</span>
+                <AudioVisualizerPill />
+              </div>
+
+              <div className="flex items-center justify-between px-3 py-2 rounded-md bg-[#121824] border border-slate-800">
                 <span className="text-xs font-medium text-slate-300">Theme</span>
                 <ThemeToggle />
               </div>
@@ -176,6 +190,7 @@ export default function Navbar() {
               <a
                 href={profileData.resumeUrl}
                 download="Arjunbabu_Saila_Resume.pdf"
+                onClick={playClick}
                 className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-500 transition-colors"
               >
                 <FileDown className="w-4 h-4" />

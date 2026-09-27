@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { profileData } from "@/data/profile";
 import { GithubIcon, LinkedinIcon } from "./icons";
+import { useSound } from "@/context/SoundContext";
 import {
   Mail,
   Phone,
@@ -14,6 +15,7 @@ import {
   AlertCircle,
   Loader2,
 } from "lucide-react";
+import CinematicSection from "./ui/CinematicSection";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -28,6 +30,8 @@ export default function Contact() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
+
+  const { playClick, playHover } = useSound();
 
   const validate = () => {
     const errs: Record<string, string> = {};
@@ -57,6 +61,7 @@ export default function Contact() {
     e.preventDefault();
     if (!validate()) return;
 
+    playClick();
     setIsSubmitting(true);
 
     try {
@@ -74,28 +79,37 @@ export default function Contact() {
   };
 
   const copyEmail = () => {
+    playClick();
     navigator.clipboard.writeText(profileData.email);
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2000);
   };
 
   const copyPhone = () => {
+    playClick();
     navigator.clipboard.writeText(profileData.phone);
     setCopiedPhone(true);
     setTimeout(() => setCopiedPhone(false), 2000);
   };
 
   return (
-    <section id="contact" className="py-20 lg:py-24 bg-[#090c12] border-t border-slate-800/80">
+    <CinematicSection
+      id="contact"
+      className="py-24 lg:py-28 bg-[#090c12] border-t border-slate-800/80"
+      backgroundGlow="rgba(14, 165, 233, 0.06)"
+      intensity="medium"
+      duration="slow"
+      parallax
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mb-12">
-          <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-blue-400 mb-2">
-            <span>Direct Channel</span>
+        <div className="max-w-3xl mb-14">
+          <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2 font-mono">
+            <span>SECURE_COMMS // INBOX</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-            Let&apos;s Build Something Useful.
+          <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white uppercase font-sans leading-tight">
+            LET&apos;S BUILD <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">SOMETHING</span> USEFUL.
           </h2>
-          <div className="h-1 w-12 bg-blue-500 rounded-full mt-3 mb-4" />
+          <div className="h-1 w-16 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full mt-4 mb-4" />
           <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
             I&apos;m open to opportunities involving software engineering, AI-powered applications, full-stack development and cybersecurity.
           </p>
@@ -398,6 +412,6 @@ export default function Contact() {
           </div>
         </div>
       </div>
-    </section>
+    </CinematicSection>
   );
 }

@@ -1,21 +1,30 @@
-"use client";
-
 import { educationData } from "@/data/education";
 import { GraduationCap, Calendar, MapPin, CheckCircle2, Clock } from "lucide-react";
+import { useSound } from "@/context/SoundContext";
+import CinematicSection from "./ui/CinematicSection";
 
 export default function Education() {
+  const { playHover } = useSound();
+
   return (
-    <section id="education" className="py-16 bg-[#090c12] border-t border-slate-800/80">
+    <CinematicSection
+      id="education"
+      className="py-20 bg-[#090c12] border-t border-slate-800/80"
+      backgroundGlow="rgba(59, 130, 246, 0.05)"
+      intensity="subtle"
+      duration="slow"
+      parallax
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="max-w-3xl mb-10">
-          <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-blue-400 mb-2">
-            <span>Academic Foundation</span>
+        <div className="max-w-3xl mb-12">
+          <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2 font-mono">
+            <span>ACADEMIC_FOUNDATION // CORE</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-            Education
+            Education & Theoretical Foundations
           </h2>
-          <div className="h-1 w-12 bg-blue-500 rounded-full mt-3" />
+          <div className="h-1 w-12 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full mt-3" />
         </div>
 
         {/* Two-Card Clean Grid */}
@@ -23,8 +32,10 @@ export default function Education() {
           {educationData.map((item) => (
             <div
               key={item.id}
-              className="p-6 sm:p-7 rounded-2xl bg-[#0e131d] border border-slate-800 hover:border-slate-700 transition-all duration-200 shadow-lg flex flex-col justify-between"
+              onMouseEnter={playHover}
+              className="group relative p-6 sm:p-7 rounded-2xl bg-[#0e131d]/90 border border-slate-800 hover:border-blue-500/40 transition-all duration-300 shadow-xl flex flex-col justify-between overflow-hidden"
             >
+              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-500/0 group-hover:via-cyan-400 to-transparent transition-all duration-500" />
               <div>
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <div className="p-2.5 rounded-xl bg-blue-600/10 border border-blue-500/20 text-blue-400">
@@ -83,6 +94,6 @@ export default function Education() {
           ))}
         </div>
       </div>
-    </section>
+    </CinematicSection>
   );
 }

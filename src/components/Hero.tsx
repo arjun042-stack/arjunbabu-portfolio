@@ -1,9 +1,14 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { profileData } from "@/data/profile";
 import Terminal from "./Terminal";
+import HeroAiCanvas from "./HeroAiCanvas";
+import { useSound } from "@/context/SoundContext";
 import { GithubIcon, LinkedinIcon } from "./icons";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ArrowRight,
   FileDown,
@@ -12,11 +17,44 @@ import {
   ShieldCheck,
   Cpu,
   Layers,
+  ChevronDown,
+  Sparkles,
 } from "lucide-react";
 
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 export default function Hero() {
+  const { playClick, playHover } = useSound();
+  const heroContentRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion || !heroContentRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(heroContentRef.current, {
+        y: -50,
+        opacity: 0.75,
+        scale: 1.015,
+        filter: "blur(4px)",
+        ease: "power1.inOut",
+        scrollTrigger: {
+          trigger: "#home",
+          start: "bottom 85%",
+          end: "bottom 15%",
+          scrub: 1.4,
+        },
+      });
+    }, heroContentRef);
+
+    return () => ctx.revert();
+  }, []);
+
   const scrollToProjects = (e: React.MouseEvent) => {
     e.preventDefault();
+    playClick();
     const projectsElement = document.getElementById("projects");
     if (projectsElement) {
       const navOffset = 80;
@@ -32,8 +70,11 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-[92vh] flex items-center justify-center pt-24 pb-16 lg:py-28 overflow-hidden"
+      className="relative min-h-[95vh] flex flex-col justify-center pt-24 pb-16 lg:py-28 overflow-hidden"
     >
+      {/* Interactive AI Neural Node Canvas */}
+      <HeroAiCanvas />
+
       {/* Subtle background tech grid lines (pure CSS, low opacity) */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.03]"
@@ -51,24 +92,31 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div ref={heroContentRef} className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10 transform-gpu">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Column: Core Positioning & Identity */}
           <div className="lg:col-span-7 space-y-6">
             {/* Status & Location Pill */}
-            <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full bg-slate-900/90 border border-slate-800 text-xs text-slate-300">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-              </span>
-              <span className="font-medium text-slate-300">
-                Available for Engineering Opportunities
-              </span>
-              <span className="text-slate-600">|</span>
-              <span className="inline-flex items-center gap-1 text-slate-400">
-                <MapPin className="w-3 h-3 text-slate-400" />
-                {profileData.location}
-              </span>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full bg-slate-900/90 border border-slate-800 text-xs text-slate-300 shadow-sm">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                </span>
+                <span className="font-medium text-slate-300">
+                  Available for Engineering Opportunities
+                </span>
+                <span className="text-slate-600">|</span>
+                <span className="inline-flex items-center gap-1 text-slate-400">
+                  <MapPin className="w-3 h-3 text-slate-400" />
+                  {profileData.location}
+                </span>
+              </div>
+
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-950/60 border border-blue-800/40 text-[10px] font-mono text-blue-300">
+                <Sparkles className="w-2.5 h-2.5 text-cyan-400" />
+                <span>AI_ENGINEERING // CORE</span>
+              </div>
             </div>
 
             {/* Identity & Profile Photo */}
@@ -160,16 +208,19 @@ export default function Hero() {
               <a
                 href="#projects"
                 onClick={scrollToProjects}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold bg-blue-600 text-white hover:bg-blue-500 shadow-md shadow-blue-600/20 transition-all duration-200 active:scale-[0.98]"
+                onMouseEnter={playHover}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 transition-all duration-200 active:scale-[0.96] group"
               >
                 <span>View Projects</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </a>
 
               <a
                 href={profileData.resumeUrl}
                 download="Arjunbabu_Saila_Resume.pdf"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold bg-slate-900 text-slate-200 border border-slate-700 hover:border-slate-500 hover:text-white transition-all duration-200 active:scale-[0.98]"
+                onClick={playClick}
+                onMouseEnter={playHover}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold bg-slate-900 text-slate-200 border border-slate-700 hover:border-slate-500 hover:text-white transition-all duration-200 active:scale-[0.96] shadow-sm"
               >
                 <FileDown className="w-4 h-4" />
                 <span>Download Resume</span>
@@ -187,8 +238,10 @@ export default function Hero() {
                   href={profileData.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={playClick}
+                  onMouseEnter={playHover}
                   className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-white transition-colors"
-                  aria-label="GitHub Profile (Placeholder)"
+                  aria-label="GitHub Profile"
                 >
                   <GithubIcon className="w-4 h-4" />
                   <span>GitHub</span>
@@ -198,8 +251,10 @@ export default function Hero() {
                   href={profileData.linkedInUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={playClick}
+                  onMouseEnter={playHover}
                   className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-white transition-colors"
-                  aria-label="LinkedIn Profile (Placeholder)"
+                  aria-label="LinkedIn Profile"
                 >
                   <LinkedinIcon className="w-4 h-4" />
                   <span>LinkedIn</span>
@@ -207,6 +262,8 @@ export default function Hero() {
 
                 <a
                   href={`mailto:${profileData.email}`}
+                  onClick={playClick}
+                  onMouseEnter={playHover}
                   className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-white transition-colors"
                   aria-label="Send Email"
                 >
@@ -227,6 +284,14 @@ export default function Hero() {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="pt-10 hidden sm:flex flex-col items-center justify-center pointer-events-none opacity-60">
+          <span className="text-[10px] font-mono tracking-widest text-slate-400 uppercase">
+            Scroll to Explore
+          </span>
+          <ChevronDown className="w-4 h-4 text-blue-400 animate-bounce mt-1" />
         </div>
       </div>
     </section>

@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { profileData } from "@/data/profile";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { SoundProvider } from "@/context/SoundContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -154,7 +155,9 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-[#090c12] text-[#f8fafc] font-sans antialiased selection:bg-blue-600/30 selection:text-white min-h-screen flex flex-col transition-colors duration-200">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <SoundProvider>{children}</SoundProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

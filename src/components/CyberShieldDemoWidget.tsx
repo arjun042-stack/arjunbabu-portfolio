@@ -58,6 +58,21 @@ export default function CyberShieldDemoWidget() {
         </div>
       </div>
 
+      {/* CyberShield Progressive Security Dataflow Stream */}
+      <div className="px-3.5 py-2 bg-[#090d16] border-b border-slate-800/80 overflow-x-auto scrollbar-none">
+        <div className="flex items-center gap-1.5 text-[9px] font-mono whitespace-nowrap min-w-max">
+          <span className="px-2 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-800">WAZUH</span>
+          <span className="text-slate-600">→</span>
+          <span className="px-2 py-0.5 rounded bg-blue-950 text-cyan-300 border border-blue-800">EVENTS</span>
+          <span className="text-slate-600">→</span>
+          <span className="px-2 py-0.5 rounded bg-blue-950 text-indigo-300 border border-blue-800">ELASTICSEARCH</span>
+          <span className="text-slate-600">→</span>
+          <span className="px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800 animate-pulse">AI ANALYSIS</span>
+          <span className="text-slate-600">→</span>
+          <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">THREAT INVESTIGATION</span>
+        </div>
+      </div>
+
       {/* Control Tabs */}
       <div className="flex border-b border-slate-800/80 bg-[#0d111a] px-3 pt-1 text-[11px]">
         <button

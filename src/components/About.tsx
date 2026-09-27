@@ -1,24 +1,34 @@
-"use client";
-
 import { experiencesData } from "@/data/experience";
 import { profileData } from "@/data/profile";
 import { ShieldCheck, Cpu, Code2, Building2, Calendar, MapPin } from "lucide-react";
+import CinematicSection from "./ui/CinematicSection";
 
 export default function About() {
   const traineeExp = experiencesData[0];
 
   return (
-    <section id="about" className="py-20 lg:py-24 border-t border-slate-800/80 bg-[#090c12]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="max-w-3xl mb-12">
-          <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-blue-400 mb-2">
-            <span>Background & Focus</span>
+    <CinematicSection
+      id="about"
+      className="py-20 lg:py-24 border-t border-slate-800/80 bg-[#090c12]"
+      backgroundGlow="rgba(59, 130, 246, 0.08)"
+      intensity="medium"
+      duration="slow"
+      parallax
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Cinematic Typography Statement */}
+        <div className="mb-14 pb-10 border-b border-slate-800/80">
+          <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-cyan-400 font-semibold mb-3">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            <span>CORE PHILOSOPHY & FOCUS</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-            About Me
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white uppercase font-sans leading-tight">
+            I BUILD <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-indigo-400">INTELLIGENT</span> SYSTEMS.
           </h2>
-          <div className="h-1 w-12 bg-blue-500 rounded-full mt-3" />
+          <div className="h-1 w-16 bg-blue-500 rounded-full mt-4 mb-4" />
+          <p className="text-sm sm:text-base text-slate-300 max-w-3xl leading-relaxed">
+            Uniting end-to-end full-stack software engineering with applied Gemini AI reasoning pipelines and security operations to build real, scalable technology.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
@@ -139,6 +149,6 @@ export default function About() {
           </div>
         </div>
       </div>
-    </section>
+    </CinematicSection>
   );
 }
